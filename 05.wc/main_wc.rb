@@ -19,12 +19,12 @@ def main
 
   files_stats = calculate_files_stats(path_list, options)
   total_stats = calculate_total_stats(files_stats)
-  print_width = calculate_width(total_stats)
+  format_width = calculate_width(total_stats)
 
-  print_wc_core(path_list, files_stats, print_width)
+  print_wc_core(path_list, files_stats, format_width)
   return if path_list.size.eql?(1)
 
-  print_stats(total_stats, print_width)
+  print_stats(total_stats, format_width)
   puts 'total'
 end
 
@@ -64,21 +64,21 @@ def calculate_width(total_stats)
   [total_stats.values.map(&:to_s).map(&:size).max + 1, 7].max
 end
 
-def print_wc_core(path_list, files_stats, print_width)
+def print_wc_core(path_list, files_stats, format_width)
   path_list.each do |path|
     unless File.exist?(path)
       puts "wc: #{path}: No such file or directory"
       next
     end
     puts "wc: #{path}: Is a directory" if File.directory?(path)
-    print_stats(files_stats[path], print_width)
+    print_stats(files_stats[path], format_width)
     puts path
   end
 end
 
-def print_stats(stats, width)
+def print_stats(stats, format_width)
   stats.each_value do |v|
-    print "#{v.to_s.rjust(width, ' ')} "
+    print "#{v.to_s.rjust(format_width, ' ')} "
   end
 end
 
