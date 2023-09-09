@@ -3,8 +3,6 @@
 require 'optparse'
 
 def main
-  options = retrieve_options
-
   unless $stdin.tty?
     stat = calculate_stats($stdin.read, options)
     print_stats(stat, calculate_width(stat))
@@ -24,7 +22,7 @@ def main
   print_width = calculate_width(total_stats)
 
   print_wc_core(path_list, files_stats, print_width)
-  return unless path_list.size >= 2
+  return if path_list.size.eql?(1)
 
   print_stats(total_stats, print_width)
   puts 'total'
@@ -84,7 +82,7 @@ def print_stats(stats, width)
   end
 end
 
-def retrieve_options
+def options
   options = []
   OptionParser.new do |o|
     o.on('-c') { options.append(:bytes) }
