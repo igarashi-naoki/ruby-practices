@@ -141,12 +141,13 @@ def calculate_total_blocks(file_dir_list, path)
 end
 
 def ls_display_long_format(hash_list, widths)
-  hash_list.each do |info_hash|
-    info_hash.each do |key, value|
+  hash_list.each_with_index do |info_hash, index|
+    info_hash.each_with_index do |(key, value), i|
       value = value.to_s.rjust(widths[key], ' ') if widths.key?(key)
-      print "#{value} "
+      print value
+      print ' ' unless i == info_hash.size - 1
     end
-    puts
+    puts unless index == hash_list.length - 1
   end
 end
 
