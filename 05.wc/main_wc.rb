@@ -5,7 +5,7 @@ require 'optparse'
 def main
   unless $stdin.tty?
     stat = calculate_stats($stdin.read, options)
-    print_stats(stat, calculate_width(stat))
+    print_stats(stats: stat, format_width: calculate_width(stat))
     puts
     return
   end
@@ -24,8 +24,7 @@ def main
   print_wc_core(path_list, files_stats, format_width)
   return if path_list.size.eql?(1)
 
-  print_stats(total_stats, format_width)
-  puts 'total'
+  print_stats(stats: total_stats, path: 'total', format_width:)
 end
 
 def calculate_files_stats(path_list, options)
@@ -71,15 +70,15 @@ def print_wc_core(path_list, files_stats, format_width)
       next
     end
     puts "wc: #{path}: Is a directory" if File.directory?(path)
-    print_stats(files_stats[path], format_width)
-    puts path
+    print_stats(stats: files_stats[path], path:, format_width:)
   end
 end
 
-def print_stats(stats, format_width)
+def print_stats(stats:, format_width:, path: nil)
   stats.each_value do |v|
     print "#{v.to_s.rjust(format_width, ' ')} "
   end
+  puts path unless path.nil?
 end
 
 def options
