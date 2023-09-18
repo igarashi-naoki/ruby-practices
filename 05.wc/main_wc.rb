@@ -24,7 +24,7 @@ def main
   print_wc_core(path_list, files_stats, format_width)
   return if path_list.size.eql?(1)
 
-  print_stats(stats: total_stats, path: 'total', format_width:)
+  print_stats(stats: total_stats, format_width:, is_total: true)
 end
 
 def calculate_files_stats(path_list, options)
@@ -74,10 +74,11 @@ def print_wc_core(path_list, files_stats, format_width)
   end
 end
 
-def print_stats(stats:, format_width:, path: nil)
+def print_stats(stats:, format_width:, path: nil, is_total: false)
   stats.each_value do |v|
     print "#{v.to_s.rjust(format_width, ' ')} "
   end
+  puts 'total' if is_total
   puts path unless path.nil?
 end
 
